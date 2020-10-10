@@ -7,11 +7,13 @@ const getScreenShot = async (req, res) => {
   const options = req.body;
   const fileName = `${options.name}.${options.extension}`;
   const path = `./pdfs/${fileName}`;
+  console.log('path: ', path);
   await takeScreenShot({ ...options, path });
   return sendData(fileName, res);
 };
 
 const sendData = (path, res) => {
+  console.log('path: sendData', path);
   fs.readFile(dir + "/pdfs/" + path, function (err, data) {
     if (err) throw err;
     res.setHeader("Content-Disposition", `attachment; filename=${path}`);

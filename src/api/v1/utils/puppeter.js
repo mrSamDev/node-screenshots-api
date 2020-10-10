@@ -8,6 +8,7 @@ const takeScreenShot = async (options) => {
   if (isDownloadFormatPdf) await page.pdf({ path: options.path, format: options.dimensions.pdfFormat });
   else await page.screenshot({ path: options.path, type: options.format, fullPage: true });
   await page.close();
+ console.log("DONE");
   await browser.close();
 };
 
