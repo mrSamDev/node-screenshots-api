@@ -3,11 +3,18 @@ const fs = require("fs");
 const path = require("path");
 const dir = path.resolve();
 const takeScreenShot = require("../../utils/puppeter");
+
+const trimText = (string) => {
+  const length = 80;
+  if (string.length > length) return string.substring(0, length - 3)
+  return string;
+};
+
 const getScreenShot = async (req, res) => {
   const options = req.body;
   const isDownloadFormatPdf = options.format === "pdf";
   const fileName = `${options.name}.${options.extension}`;
-  const cacheName = `${fileName}.${isDownloadFormatPdf ? `${options.dimensions && options.dimensions.pdfFormat}.` : ``}${options.dimensions.width}.${options.dimensions.height}`;
+  const cacheName = `${trimText(fileName)}.${isDownloadFormatPdf ? `${options.dimensions && options.dimensions.pdfFormat}.` : ``}${options.dimensions.width}.${options.dimensions.height}`;
   console.log('cacheName: ', cacheName);
   const index = cache.keys().indexOf(cacheName);
   console.log('index: ', index);
