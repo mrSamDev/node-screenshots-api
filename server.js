@@ -3,7 +3,13 @@ const express = require("express");
 const loaders = require("./src/lib");
 const chalk = require("chalk");
 const cluster = require("cluster");
+const fs = require("fs");
 async function startServer() {
+  const dir = "./pdfs";
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir);
+    console.log("DIRECTORY");
+  }
   const app = express();
   await loaders({ app });
   const PORT = process.env.PORT || 7001;
@@ -36,7 +42,14 @@ if (cluster.isMaster) {
   });
 
   cluster.on("exit", function (worker, code, signal) {
-    console.log("Worker " + worker.process.pid + " died with code: " + code + ", and signal: " + signal);
+    console.log(
+      "Worker " +
+        worker.process.pid +
+        " died with code: " +
+        code +
+        ", and signal: " +
+        signal
+    );
     console.log("Starting a new worker");
     cluster.fork();
   });
